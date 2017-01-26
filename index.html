@@ -1,13 +1,23 @@
-<!-- *** ADD OR EDIT HTML INSIDE OF THE dmRespCol DIVS, SEE DOCUMENTATION FOR GUIDELINES *** -->
-<div class="dmRespCol small-12 medium-6 large-6" id="1909578532">
- <!-- *** INSERT YOUR HTML BELOW *** -->
- <div dmle_widget="html" class="dmCustomHtml" id="1901201990">
-  <script>
-   var API_URL = 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed?';
-var CHART_API_URL = 'https://chart.apis.google.com/chart?';
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>
+    </title>
+
+
+
+  </head>
+  <body>
+
+    <script>
+var API_URL = 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed?';
+var CHART_API_URL = 'http://chart.apis.google.com/chart?';
+
 // Object that will hold the callbacks that process results from the
 // PageSpeed Insights API.
 var callbacks = {}
+
 // Invokes the PageSpeed Insights API. The response will contain
 // JavaScript that invokes our callback with the PageSpeed results.
 function runPagespeed() {
@@ -22,6 +32,7 @@ function runPagespeed() {
   s.src = API_URL + query;
   document.head.insertBefore(s, null);
 }
+
 // Our JSONP callback. Checks for errors, then invokes our callback handlers.
 function runPagespeedCallbacks(result) {
   if (result.error) {
@@ -37,6 +48,7 @@ function runPagespeedCallbacks(result) {
     }
     return;
   }
+
   // Dispatch to each function on the callbacks object.
   for (var fn in callbacks) {
     var f = callbacks[fn];
@@ -45,10 +57,62 @@ function runPagespeedCallbacks(result) {
     }
   }
 }
+
 // Invoke the callback that fetches results. Async here so we're sure
 // to discover any callbacks registered below, but this can be
 // synchronous in your code.
 setTimeout(runPagespeed, 0);
-  </script>
- </div>
-</div>
+</script>
+
+<script>
+callbacks.displayPageSpeedScore = function(result) {
+  var score = result.score;
+  // Construct the query to send to the Google Chart Tools.
+  var query = [
+    'chtt=Page+Speed+score:+' + score,
+    'chs=180x100',
+    'cht=gom',
+    'chd=t:' + score,
+    'chxt=x,y',
+    'chxl=0:|' + score,
+  ].join('&');
+  var i = document.createElement('img');
+  i.src = CHART_API_URL + query;
+  document.body.insertBefore(i, null);
+};
+</script>
+
+<script>
+callbacks.displayTopPageSpeedSuggestions = function(result) {
+  var results = [];
+  var ruleResults = result.formattedResults.ruleResults;
+  for (var i in ruleResults) {
+    var ruleResult = ruleResults[i];
+    // Don't display lower-impact suggestions.
+    if (ruleResult.ruleImpact < 3.0) continue;
+    results.push({name: ruleResult.localizedRuleName,
+                  impact: ruleResult.ruleImpact});
+  }
+  results.sort(sortByImpact);
+  var ul = document.createElement('ul');
+  for (var i = 0, len = results.length; i < len; ++i) {
+    var r = document.createElement('li');
+    r.innerHTML = results[i].name;
+    ul.insertBefore(r, null);
+  }
+  if (ul.hasChildNodes()) {
+    document.body.insertBefore(ul, null);
+  } else {
+    var div = document.createElement('div');
+    div.innerHTML = 'No high impact suggestions. Good job!';
+    document.body.insertBefore(div, null);
+  }
+};
+
+// Helper function that sorts results in order of impact.
+function sortByImpact(a, b) { return b.impact - a.impact; }
+</script>
+
+
+  </body>
+</html>
