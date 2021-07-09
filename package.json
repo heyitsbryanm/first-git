@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/heyitsbryanm/first-git#readme",
   "dependencies": {
-    "testing-dependancy": "^1.0.0"
+    "testing-dependancy": "^2.0.0"
   }
 }
