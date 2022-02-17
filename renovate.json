@@ -4,9 +4,8 @@
   ],
   "packageRules": [
     {
-      "packagePatterns": [
-        "testing-dependency-two"
-      ],
+      "packagePatterns": ["*"],
+      "excludePackagePatterns": ["testing-dependancy"],
       "enabled": false
     }
   ]
