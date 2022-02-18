@@ -4,9 +4,8 @@
   ],
   "packageRules": [
     {
-      "packagePatterns": ["*"],
-      "excludePackagePatterns": ["testing-dependancy"],
-      "enabled": false
+      "packagePatterns": ["testing-dependancy"],
+      "rangeStrategy": "replace"
     }
   ]
 }
