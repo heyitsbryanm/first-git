@@ -18,6 +18,6 @@
   "homepage": "https://github.com/heyitsbryanm/first-git#readme",
   "dependencies": {
     "testing-dependancy": "^4.0.0",
-    "testing-dependency-two": "^1.0.0"
+    "testing-dependency-two": "^3.0.0"
   }
 }
