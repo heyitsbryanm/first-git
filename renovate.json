@@ -3,9 +3,13 @@
     "config:base"
   ],
   "packageRules": [
-    {
-      "packagePatterns": ["testing-dependancy"],
-      "rangeStrategy": "replace"
-    }
+		{
+			"packagePatterns": ["*"],
+			"enabled": false
+		},
+		{
+			"packageNames": ["testing-dependancy"],
+			"enabled": true
+		}
   ]
 }
